@@ -5,13 +5,22 @@
 #### MVVM
 
 ##### ¿En qué consiste esta arquitectura?
-Escribe tu respuesta aquí
+Es un patrón de arquitura como el MVC. El objetivo principal de este es lograr la separación de preocupaciones mediante capas.
+- Vista: despliega la interficie de usuario (UI) e informa a las otras capas de las acciones del usuario.
+- ViewModel: expone la información a la Vista
+- Model: recupera la información de la fuente de datos y la expone al ViewModel.
+
+La principal diferencia respeto a los otros patrones, es que la ViewModel no debe contener ninguna referencia de las vistas. El viewmodel solo se ocupa de proporcionar la información y no se interesa de lo que consume. La ViewModel también es responsable de exponer eventos a la Vista.
 
 ##### ¿Cuáles son sus ventajas?
-Escribe tu respuesta aquí
+Una de las ventajas que presenta este patrón es a la hora de almacenar datos. La vista viewmodel está especialmente especializda para administrar y almacenar información en una manera consciente durante el ciclo de vida. Esto significa que los datos que se almacenan pueden sobrevivir a cambios de ciclo de vida de la aplicación, como por ejemplo, rotaciones de pantalla. 
+El ViewModel puede exponer eventos que las vistas pueden observar y reaccionar en consecuencia. Por ejemplo el evento de cuando ya se ha creado un usuario en la BD o la actualización de una película en un catálogo. De esta manera liberas el viewmodel de tener referecias a Actividades o Fragmentos.
+
+Los otros patrones muestran una clara desventaja con respeto al modelo MVVM, porque los controladores y los presentadores son dificiles de probar (Unit test). En cambio en el ViewModel son mas fáciles, ya que no tienen ninguna referencia a las vista.
+El MVVM también reseulte el problema del controlador de grasa proporcionando una mejor separación de preocupaciones, ya que el objetivo principal del ViewModel es estar completamente separado de las vistas.
 
 ##### ¿Qué inconvenientes tiene?
-Escribe aquí tu respuesta
+La principal desventaja es que puede ser demasiado compleja para aplicaciones cuya interfaz de usuario es bastante simple. 
 
 #### MVP
 
