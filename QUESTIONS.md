@@ -40,13 +40,20 @@ Es mas complejo a la hora de realizar unit test en la vista ya que se encuentra 
 #### MVI
 
 ##### ¿En qué consiste esta arquitectura?
-Escribe tu respuesta aquí
+MVI es un patrón de diseño como los anteriormente visto. EN este caso con capas diferentes Modelo-Vista-Intent. Es un patrón de arquitectura bastante nuevo para Android.
+- Modelo: representa un estado. Són inmutables porquè tienen que garantizar un flujo de datos unidireccional entre ellos.
+- Intent: rpresentan intenciones o deso de realizar una acción por parte del usuario.
+- Vista: igual que en MVP, están representadas por interfaces que luego implementada por una Actividad o un fragmento.
 
 ##### ¿Cuáles son sus ventajas?
-Escribe tu respuesta aquí
+Igual que con los patrones anteriores, es una herramienta adicional que tiene a su dispoción para crear aplicaciones escalables y mantenibles. 
+Las ventajas son:
+- Flujo de datos unidereciionales y ciclico para la aplicación
+- Estado coherente durante todo el ciclo de vida de las vistas
+-  Modelos inmutables que proporcionan un comportamiento confiable y seguro de subprocesos.
 
 ##### ¿Qué inconvenientes tiene?
-Escribe aquí tu respuesta
+La curba de aprendizaje de este patrón de arquitectura para Android es bastante alta ya que necesita tener una cantidad decente de conocimeintos de otros temas intermedios / como programación Reactiva, etc.
 
 ---
 
