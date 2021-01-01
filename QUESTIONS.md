@@ -75,7 +75,9 @@ Existen diferentes tipos de test:
 ### Inyección de dependencias
 
 #### Explica en qué consiste y por qué nos ayuda a mejorar nuestro código.
-Escribe aquí tu respuesta
+Una dependencia ocurre cuando un objeto de una clase requiere un objeto de otra para poder funcionar correctamente. Estas dependencias a veces pueden ser variables miembro de una clase. 
 
 #### Explica cómo se hace para aplicar inyección de dependencias de forma manual a un proyecto (sin utilizar librerías externas).
-Escribe aquí tu respuesta
+Se hace uso de las dos anotaciones como són @Inject y @component. 
+- @Inject:; esta anotación marca qué depencia se esta inyectando.
+- @component: esta anotación se usa en una clase de interfaz dsde  el cual Dagger luego genera una nueva clase que contiene métodos que devuelven objetos con las dependencias inyectadas.
