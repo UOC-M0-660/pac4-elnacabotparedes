@@ -25,13 +25,17 @@ La principal desventaja es que puede ser demasiado compleja para aplicaciones cu
 #### MVP
 
 ##### ¿En qué consiste esta arquitectura?
-Escribe tu respuesta aquí
+Es un patrón de arquitectura como el MVVM. Este se diferencia con que tiene diferentes capas. 
+- Modelo: es la capa de datos que se ocupa de la lógica empresarial.
+- View: Muestra la interfaz de usuario y escucha las acciones del usuario.
+- Presentador: habla con el modelo y la vista y maneja la lógica de presentación
+
 
 ##### ¿Cuáles son sus ventajas?
-Escribe tu respuesta aquí
+Al separar las actividades en clases modelo, vista y presentador se puede lograr una separación de preocupaciones, así como las pruebas unitarias.
 
 ##### ¿Qué inconvenientes tiene?
-Escribe aquí tu respuesta
+Es mas complejo a la hora de realizar unit test en la vista ya que se encuentra todo mas enlazado. Que en comparación a MVVM que esta mas separado.
 
 #### MVI
 
