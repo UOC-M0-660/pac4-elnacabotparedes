@@ -60,10 +60,15 @@ La curba de aprendizaje de este patrón de arquitectura para Android es bastante
 ### Testing
 
 #### ¿Qué tipo de tests se deberían incluir en cada parte de la pirámide de test? Pon ejemplos de librerías de testing para cada una de las partes. 
-Escribe aquí tu respuesta
+Existen diferentes tipos de test: 
+- Small: Los test unit son test rapidos indepentientes del emulador o el dispositivo físico.  Se enfocan en un solo componente ya que se prueban todas sus dependencias de antemano y se consiguen con el comportamiento deseado. Són pruebas rápidas porque no requieren del emulador. Pero también son de baja fidelidad.  Las herramientas que mas se utilizan son las pruebas JUnit y Mockito.
+- Medium: son pruebas de intergración que pueden ayudar a interactuar con su código y otras partedes del marco de Android. Son pruebas que se ejecutan despues de las pruebas unitarias. La herramienta mas común es Roboelectric. Sin embargo es mejor usar un emulador para realizar estas pruebas usando un servicio como Firebase Test.
+- Large: las pruebas grandes son de integraciones y de UI. que emulan el comportamiento del usuario y afirman los resultados de la UI. Són las pruebas mas lentas y mas caras porque requieren el emulador o un dispositivo físico. Las herramientas mas utilizadas son Espresso y UI Automator.
 
 #### ¿Por qué los desarrolladores deben centrarse sobre todo en los Unido Tests?
-Escribe aquí tu respuesta
+1. Es mucho mas rápido ejecutar pruebas unitarias que ejecutar pruebas de integración de interfaz, porque son mas lentas y necesitas de un emulador o un dispositivo físico. 
+2. No requieren de bibliotecas de pruebas de Android. 
+3. Las pruebas unitarias constituyen la base del conjunto de pruebas de una aplicación. La idea detrá de las pruebas unitarias es que si puedes probar que todos los aqutiecturas avanazadas de a de aplicaciones funcionan como se esperaba puedes tener una gran confianza en que en conjunto tambien funcionarán como se esperaba.
 
 ---
 
