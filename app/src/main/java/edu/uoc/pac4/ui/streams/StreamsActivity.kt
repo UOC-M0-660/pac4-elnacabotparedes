@@ -11,15 +11,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.pac4.R
 import edu.uoc.pac4.data.SessionManager
+import edu.uoc.pac4.data.TwitchApiDataSource
 import edu.uoc.pac4.data.TwitchApiService
+import edu.uoc.pac4.data.di.dataModule
 import edu.uoc.pac4.data.network.Network
 import edu.uoc.pac4.data.network.UnauthorizedException
+import edu.uoc.pac4.data.streams.StreamsRepository
 import edu.uoc.pac4.ui.login.LoginActivity
 import edu.uoc.pac4.ui.profile.ProfileActivity
 import kotlinx.android.synthetic.main.activity_streams.*
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
-class StreamsActivity : AppCompatActivity() {
+class StreamsActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "StreamsActivity"
 
@@ -27,6 +34,8 @@ class StreamsActivity : AppCompatActivity() {
     private val layoutManager = LinearLayoutManager(this)
 
     private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
+
+    val streamRepo by inject<StreamsRepository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +48,11 @@ class StreamsActivity : AppCompatActivity() {
         }
         // Get Streams
         getStreams()
+
+        startKoin {
+            // declare modules
+            modules(dataModule)
+        }
     }
 
     private fun initRecyclerView() {
