@@ -48,11 +48,6 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
         }
         // Get Streams
         getStreams()
-
-        startKoin {
-            // declare modules
-            modules(dataModule)
-        }
     }
 
     private fun initRecyclerView() {
