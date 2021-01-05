@@ -112,7 +112,7 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
 
                 Log.d(TAG, "Got Access token ${response.accessToken}")
 
-            }} ?: run {
+            }?: run {
                 // Failure :(
 
                 // Show Error Message
