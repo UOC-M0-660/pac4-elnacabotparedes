@@ -1,5 +1,6 @@
 package edu.uoc.pac4.data.streams
 
+import android.util.Log
 import edu.uoc.pac4.data.TwitchApiDataSource
 
 /**
@@ -13,6 +14,11 @@ class TwitchStreamsRepository(
 
     override suspend fun getStreams(cursor: String?): Pair<String?, List<Stream>> {
         TODO("Not yet implemented")
+    }
+
+    override fun hello(): String {
+        Log.d("TAG", "HELLO");
+        return "heloo"
     }
 
 }
