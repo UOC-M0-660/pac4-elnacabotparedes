@@ -13,12 +13,26 @@ class OAuthAuthenticationRepository(
     private val context: Context
 ) : AuthenticationRepository {
 
-    override suspend fun isUserAvailable(): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun isUserAvailable(): Boolean
+    {
+        val sessionManager = SessionManager(context)
+        return sessionManager.isUserAvailable()
     }
 
-    override suspend fun login(authorizationCode: String): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun login(authorizationCode: String): Boolean
+    {
+        dataSource.getTokens(authorizationCode)?.let { response ->
+
+            val sessionManager = SessionManager(context)
+            sessionManager.saveAccessToken(response.accessToken)
+            response.refreshToken?.let {
+                sessionManager.saveRefreshToken(it)
+            }
+
+            return true
+        }
+
+        return false
     }
 
     override suspend fun logout()

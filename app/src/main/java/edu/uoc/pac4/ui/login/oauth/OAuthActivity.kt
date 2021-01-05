@@ -28,7 +28,7 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "StreamsActivity"
 
-    private val oauthAuth by inject<AuthenticationRepository>()
+    private val oauthAuthRepository by inject<AuthenticationRepository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,35 +100,27 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
 
 
         // Create Twitch Service
-        val service = TwitchApiService(Network.createHttpClient(this))
+        //val service = TwitchApiService(Network.createHttpClient(this))
         // Launch new thread attached to this Activity.
         // If the Activity is closed, this Thread will be cancelled
         lifecycleScope.launch {
 
             // Launch get Tokens Request
-            service.getTokens(authorizationCode)?.let { response ->
+            oauthAuthRepository.login(authorizationCode)?.let { response ->
                 // Success :)
+                if(!response) {
+                    // Failure :(
 
-                Log.d(TAG, "Got Access token ${response.accessToken}")
-
-                // Save access token and refresh token using the SessionManager class
-                val sessionManager = SessionManager(this@OAuthActivity)
-                sessionManager.saveAccessToken(response.accessToken)
-                response.refreshToken?.let {
-                    sessionManager.saveRefreshToken(it)
+                    // Show Error Message
+                    Toast.makeText(
+                            this@OAuthActivity,
+                            getString(R.string.error_oauth),
+                            Toast.LENGTH_LONG
+                    ).show()
+                    // Restart Activity
+                    finish()
+                    startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
                 }
-            } ?: run {
-                // Failure :(
-
-                // Show Error Message
-                Toast.makeText(
-                    this@OAuthActivity,
-                    getString(R.string.error_oauth),
-                    Toast.LENGTH_LONG
-                ).show()
-                // Restart Activity
-                finish()
-                startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
             }
 
             // Hide Loading Indicator
