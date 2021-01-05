@@ -23,6 +23,7 @@ import edu.uoc.pac4.data.user.User
 import edu.uoc.pac4.data.user.UserRepository
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -32,8 +33,9 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "ProfileActivity"
 
-    private val userRepository by inject<UserRepository>()
-    private val authenticationRepository by inject<AuthenticationRepository>();
+    private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
+
+    private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +65,7 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
         progressBar.visibility = VISIBLE
         // Retrieve the Twitch User Profile using the API
         try {
-            userRepository.getUser()?.let { user ->
+            twitchApiService.getUser()?.let { user ->
                 // Success :)
                 // Update the UI with the user data
                 setUserInfo(user)
@@ -83,7 +85,7 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
         progressBar.visibility = VISIBLE
         // Update the Twitch User Description using the API
         try {
-            userRepository.updateUser(description)?.let { user ->
+            twitchApiService.updateUserDescription(description)?.let { user ->
                 // Success :)
                 // Update the UI with the user data
                 setUserInfo(user)
@@ -117,9 +119,10 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
     private fun logout() {
         // Clear local session data
 
-        lifecycleScope.launch {
+        /*lifecycleScope.launch {
             authenticationRepository.logout()
         }
+        */
 
         // Close this and all parent activities
         finishAffinity()

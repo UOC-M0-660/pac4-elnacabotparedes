@@ -35,7 +35,7 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
 
     private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
 
-    val streamRepo by inject<StreamsRepository>()
+    //val streamRepo by inject<StreamsRepository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +82,11 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
         // Get Twitch Streams
         lifecycleScope.launch {
             try {
-                streamRepo.getStreams(cursor)?.let { response ->
+                twitchApiService.getStreams(cursor)?.let { response ->
                     // Success :)
                     Log.d("StreamsActivity", "Got Streams: $response")
 
-                    val streams = response.second
+                    val streams = response.data.orEmpty()
                     // Update UI with Streams
                     if (cursor != null) {
                         // We are adding more items to the list
@@ -96,7 +96,7 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
                         adapter.submitList(streams)
                     }
                     // Save cursor for next request
-                    nextCursor = response.first
+                    nextCursor = response.pagination?.cursor
 
                 } ?: run {
                     // Error :(

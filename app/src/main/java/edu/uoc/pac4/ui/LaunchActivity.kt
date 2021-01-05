@@ -26,28 +26,14 @@ class LaunchActivity : AppCompatActivity(), KoinComponent {
 
     private fun checkUserSession() {
 
-        lifecycleScope.launch {
-            oauthAuthRepository.isUserAvailable()?.let { response ->
-                if(response)
-                {
-                    goToStreams()
-                }
-                else
-                {
-                    goToLogin()
-                }
-            }
+        if(SessionManager(this).isUserAvailable())
+        {
+                startActivity(Intent(this, StreamsActivity::class.java))
+        }
+        else
+        {
+                startActivity(Intent(this, LoginActivity::class.java))
         }
         finish()
-    }
-
-    private fun goToStreams()
-    {
-        startActivity(Intent(this, StreamsActivity::class.java))
-    }
-
-    private fun goToLogin()
-    {
-        startActivity(Intent(this, LoginActivity::class.java))
     }
 }

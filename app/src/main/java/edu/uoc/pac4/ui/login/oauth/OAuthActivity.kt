@@ -28,7 +28,9 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "StreamsActivity"
 
-    private val oauthAuthRepository by inject<AuthenticationRepository>()
+    //private val oauthAuthRepository by inject<AuthenticationRepository>()
+
+    private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,22 +108,24 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
         lifecycleScope.launch {
 
             // Launch get Tokens Request
-            oauthAuthRepository.login(authorizationCode)?.let { response ->
-                // Success :)
-                if(!response) {
-                    // Failure :(
+            twitchApiService.getTokens(authorizationCode)?.let { response ->
 
-                    // Show Error Message
-                    Toast.makeText(
-                            this@OAuthActivity,
-                            getString(R.string.error_oauth),
-                            Toast.LENGTH_LONG
-                    ).show()
-                    // Restart Activity
-                    finish()
-                    startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
-                }
+                Log.d(TAG, "Got Access token ${response.accessToken}")
+
+            }} ?: run {
+                // Failure :(
+
+                // Show Error Message
+                Toast.makeText(
+                        this@OAuthActivity,
+                        getString(R.string.error_oauth),
+                        Toast.LENGTH_LONG
+                ).show()
+                // Restart Activity
+                finish()
+                startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
             }
+
 
             // Hide Loading Indicator
             progressBar.visibility = View.GONE

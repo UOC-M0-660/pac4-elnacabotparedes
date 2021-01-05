@@ -12,5 +12,5 @@ val uiModule = module {
     // TODO: Init your UI Dependencies
 
     // LaunchViewModel example
-    // viewModel { LaunchViewModel(repository = get()) }
+    viewModel { LaunchViewModel(repository = get()) }
 }
