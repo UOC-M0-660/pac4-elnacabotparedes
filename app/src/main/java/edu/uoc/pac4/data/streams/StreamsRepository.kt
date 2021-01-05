@@ -9,8 +9,4 @@ interface StreamsRepository {
     /// first: Pagination cursor
     /// second: List of Streams
     suspend fun getStreams(cursor: String? = null): Pair<String?, List<Stream>>
-
-    fun hello():String
-
-
 }

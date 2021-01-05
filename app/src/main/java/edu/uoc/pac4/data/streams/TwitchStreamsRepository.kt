@@ -16,9 +16,4 @@ class TwitchStreamsRepository(
         TODO("Not yet implemented")
     }
 
-    override fun hello(): String {
-        Log.d("TAG", "HELLO");
-        return "heloo"
-    }
-
 }

@@ -16,6 +16,6 @@ class TwitchUserRepository(
     }
 
     override suspend fun updateUser(description: String): User? {
-        TODO("Not yet implemented")
+        return dataSource.updateUserDescription(description)
     }
 }
