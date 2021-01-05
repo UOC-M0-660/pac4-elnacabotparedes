@@ -12,7 +12,7 @@ class TwitchUserRepository(
 ) : UserRepository {
 
     override suspend fun getUser(): User? {
-        TODO("Not yet implemented")
+        return dataSource.getUser()
     }
 
     override suspend fun updateUser(description: String): User? {

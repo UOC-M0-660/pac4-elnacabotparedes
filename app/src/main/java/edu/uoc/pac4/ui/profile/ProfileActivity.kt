@@ -30,9 +30,7 @@ import org.koin.core.component.inject
 class ProfileActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "ProfileActivity"
-
-    private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
-
+    
     private val userRepository by inject<UserRepository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +61,7 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
         progressBar.visibility = VISIBLE
         // Retrieve the Twitch User Profile using the API
         try {
-            twitchApiService.getUser()?.let { user ->
+            userRepository.getUser()?.let { user ->
                 // Success :)
                 // Update the UI with the user data
                 setUserInfo(user)
