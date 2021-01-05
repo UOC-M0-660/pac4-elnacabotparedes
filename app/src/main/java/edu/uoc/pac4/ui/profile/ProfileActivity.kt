@@ -18,6 +18,7 @@ import edu.uoc.pac4.ui.login.LoginActivity
 import edu.uoc.pac4.data.SessionManager
 import edu.uoc.pac4.data.TwitchApiService
 import edu.uoc.pac4.data.network.UnauthorizedException
+import edu.uoc.pac4.data.oauth.AuthenticationRepository
 import edu.uoc.pac4.data.user.User
 import edu.uoc.pac4.data.user.UserRepository
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -30,8 +31,9 @@ import org.koin.core.component.inject
 class ProfileActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "ProfileActivity"
-    
+
     private val userRepository by inject<UserRepository>()
+    private val authenticationRepository by inject<AuthenticationRepository>();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,8 +116,11 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
 
     private fun logout() {
         // Clear local session data
-        SessionManager(this).clearAccessToken()
-        SessionManager(this).clearRefreshToken()
+
+        lifecycleScope.launch {
+            authenticationRepository.logout()
+        }
+
         // Close this and all parent activities
         finishAffinity()
         // Open Login

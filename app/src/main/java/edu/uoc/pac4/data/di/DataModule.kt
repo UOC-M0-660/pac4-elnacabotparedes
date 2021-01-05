@@ -25,6 +25,6 @@ val dataModule = module {
 
     single<UserRepository> { TwitchUserRepository(get()) }
 
-    single<AuthenticationRepository> { OAuthAuthenticationRepository(get()) }
+    single<AuthenticationRepository> { OAuthAuthenticationRepository(get(), androidContext()) }
 
 }
