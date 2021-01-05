@@ -49,8 +49,6 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
         // Get Streams
         getStreams()
 
-        streamRepo.hello()
-
     }
 
     private fun initRecyclerView() {

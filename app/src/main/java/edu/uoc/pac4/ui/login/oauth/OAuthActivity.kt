@@ -97,7 +97,7 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
         // Show Loading Indicator
         progressBar.visibility = View.VISIBLE
 
-        
+
 
         // Create Twitch Service
         val service = TwitchApiService(Network.createHttpClient(this))
