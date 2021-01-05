@@ -82,11 +82,11 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
         // Get Twitch Streams
         lifecycleScope.launch {
             try {
-                twitchApiService.getStreams(cursor)?.let { response ->
+                streamRepo.getStreams(cursor)?.let { response ->
                     // Success :)
                     Log.d("StreamsActivity", "Got Streams: $response")
 
-                    val streams = response.data.orEmpty()
+                    val streams = response.second
                     // Update UI with Streams
                     if (cursor != null) {
                         // We are adding more items to the list
@@ -96,7 +96,7 @@ class StreamsActivity : AppCompatActivity(), KoinComponent {
                         adapter.submitList(streams)
                     }
                     // Save cursor for next request
-                    nextCursor = response.pagination?.cursor
+                    nextCursor = response.first
 
                 } ?: run {
                     // Error :(
