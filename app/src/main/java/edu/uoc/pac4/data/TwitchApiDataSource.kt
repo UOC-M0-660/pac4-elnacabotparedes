@@ -14,6 +14,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
+import kotlin.jvm.Throws
 
 
 class TwitchApiDataSource (private val httpClient: HttpClient)

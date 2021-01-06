@@ -81,3 +81,22 @@ Una dependencia ocurre cuando un objeto de una clase requiere un objeto de otra 
 Se hace uso de las dos anotaciones como són @Inject y @component. 
 - @Inject:; esta anotación marca qué depencia se esta inyectando.
 - @component: esta anotación se usa en una clase de interfaz dsde  el cual Dagger luego genera una nueva clase que contiene métodos que devuelven objetos con las dependencias inyectadas.
+
+
+## EJERCICIO 6
+
+Lista de error:
+
+- Accesibilidad:
+    - Image without content description (activity_profile)
+    - Image without content description (item_streams)
+- Correctness:
+    - potential plurals (strings.xml)
+    - obsolete gradle dependency (core-ktx)
+    - obsolete gradle dependency (constraintlayout)
+- Performance:
+    - Unused resources (colors, dimens, strings)
+    - Overdraw:
+        - Painting regions more than one
+    - Node can be replaced by TextView with compound drawables
+        - 
