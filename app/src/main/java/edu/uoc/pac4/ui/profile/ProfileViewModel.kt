@@ -1,9 +1,8 @@
 package edu.uoc.pac4.ui.profile
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import edu.uoc.pac4.data.oauth.AuthenticationRepository
+import edu.uoc.pac4.data.user.User
 import edu.uoc.pac4.data.user.UserRepository
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -17,7 +16,9 @@ class ProfileViewModel(
 ): ViewModel()
 {
 
-    val description: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    private val userInfo = MediatorLiveData<User>()
+
+    fun getUserInfo(): LiveData<User> = userInfo
 
     fun logout()
     {
@@ -29,8 +30,18 @@ class ProfileViewModel(
     fun updateDescription(description:String)
     {
         viewModelScope.launch {
-            user.updateUser(description)
+           userInfo.postValue(user.updateUser(description))
         }
     }
+
+
+    fun getUserProfile()
+    {
+        viewModelScope.launch {
+            userInfo.postValue(user.getUser())
+        }
+    }
+
+
 
 }

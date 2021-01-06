@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -40,10 +41,26 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+
+        profileViewModel.getUserProfile()
+
+        profileViewModel.getUserInfo().observe(this, Observer {
+            user ->
+            user?.let {
+                setUserInfo(user)
+            } ?: run {
+                showError(getString(R.string.error_profile))
+            }
+        })
+
+        /*
         // Get User Profile
         lifecycleScope.launch {
             getUserProfile()
-        }
+        }*/
+
+
         // Update Description Button Listener
         updateDescriptionButton.setOnClickListener {
             // Hide Keyboard
@@ -81,8 +98,12 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
     }
 
 
-    private suspend fun updateUserDescription(description: String) {
-        progressBar.visibility = VISIBLE
+    private suspend fun updateUserDescription(description: String)
+    {
+
+        profileViewModel.updateDescription(description)
+
+        /*progressBar.visibility = VISIBLE
         // Update the Twitch User Description using the API
         try {
             twitchApiService.updateUserDescription(description)?.let { user ->
@@ -97,7 +118,7 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
             progressBar.visibility = GONE
         } catch (t: UnauthorizedException) {
             onUnauthorized()
-        }
+        }*/
     }
 
     private fun setUserInfo(user: User) {
