@@ -122,7 +122,8 @@ class ProfileActivity : AppCompatActivity(), KoinComponent {
         /*lifecycleScope.launch {
             authenticationRepository.logout()
         }
-        */
+*/
+        profileViewModel.logout()
 
         // Close this and all parent activities
         finishAffinity()

@@ -28,7 +28,6 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "StreamsActivity"
 
-    //private val oauthAuthRepository by inject<AuthenticationRepository>()
 
     private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
 
@@ -111,6 +110,13 @@ class OAuthActivity : AppCompatActivity(), KoinComponent {
             twitchApiService.getTokens(authorizationCode)?.let { response ->
 
                 Log.d(TAG, "Got Access token ${response.accessToken}")
+
+                val sessionManager = SessionManager(this@OAuthActivity)
+                sessionManager.saveAccessToken(response.accessToken)
+                response.refreshToken?.let {
+                    sessionManager.saveRefreshToken(it)
+                }
+
 
             }?: run {
                 // Failure :(
