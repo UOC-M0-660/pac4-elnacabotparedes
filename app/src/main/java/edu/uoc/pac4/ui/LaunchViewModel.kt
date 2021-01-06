@@ -1,6 +1,7 @@
 package edu.uoc.pac4.ui
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,18 +22,18 @@ class LaunchViewModel(
     // Live Data
     val isUserAvailable = MutableLiveData<Boolean>()
 
-    init {
-        isUserAvailable.setValue(false)
-        getUserAvailability()
-    }
-
     // Public function that can be called from the view (Activity)
-    fun getUserAvailability() {
+    fun getUserAvailability()
+    {
 
         viewModelScope.launch {
-            isUserAvailable.setValue(repository.isUserAvailable())
+            isUserAvailable.postValue(repository.isUserAvailable())
         }
 
     }
+
+    fun getAvailability(): LiveData<Boolean> = isUserAvailable
+
+
 
 }

@@ -23,20 +23,23 @@ class LaunchActivity : AppCompatActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launch)
-        checkUserSession()
-    }
+        //checkUserSession()
 
-    private fun checkUserSession() {
+        launchViewModel.getUserAvailability()
 
-
-        if(launchViewModel.isUserAvailable.value!!)
-        {
+        launchViewModel.getAvailability().observe(this, Observer {
+            available ->
+            if(available)
+            {
                 startActivity(Intent(this, StreamsActivity::class.java))
-        }
-        else
-        {
+            }
+            else
+            {
                 startActivity(Intent(this, LoginActivity::class.java))
-        }
-        finish()
+            }
+            finish()
+        })
+
     }
+    
 }
