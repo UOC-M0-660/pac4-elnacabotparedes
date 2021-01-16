@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -18,23 +19,48 @@ import edu.uoc.pac4.ui.login.LoginActivity
 import edu.uoc.pac4.data.SessionManager
 import edu.uoc.pac4.data.TwitchApiService
 import edu.uoc.pac4.data.network.UnauthorizedException
+import edu.uoc.pac4.data.oauth.AuthenticationRepository
 import edu.uoc.pac4.data.user.User
+import edu.uoc.pac4.data.user.UserRepository
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ProfileActivity : AppCompatActivity() {
+
+
+class ProfileActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "ProfileActivity"
 
     private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
 
+    private val profileViewModel: ProfileViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+
+        profileViewModel.getUserProfile()
+
+        profileViewModel.getUserInfo().observe(this, Observer {
+            user ->
+            user?.let {
+                setUserInfo(user)
+            } ?: run {
+                showError(getString(R.string.error_profile))
+            }
+        })
+
+        /*
         // Get User Profile
         lifecycleScope.launch {
             getUserProfile()
-        }
+        }*/
+
+
         // Update Description Button Listener
         updateDescriptionButton.setOnClickListener {
             // Hide Keyboard
@@ -72,8 +98,12 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    private suspend fun updateUserDescription(description: String) {
-        progressBar.visibility = VISIBLE
+    private suspend fun updateUserDescription(description: String)
+    {
+
+        profileViewModel.updateDescription(description)
+
+        /*progressBar.visibility = VISIBLE
         // Update the Twitch User Description using the API
         try {
             twitchApiService.updateUserDescription(description)?.let { user ->
@@ -88,7 +118,7 @@ class ProfileActivity : AppCompatActivity() {
             progressBar.visibility = GONE
         } catch (t: UnauthorizedException) {
             onUnauthorized()
-        }
+        }*/
     }
 
     private fun setUserInfo(user: User) {
@@ -109,8 +139,13 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun logout() {
         // Clear local session data
-        SessionManager(this).clearAccessToken()
-        SessionManager(this).clearRefreshToken()
+
+        /*lifecycleScope.launch {
+            authenticationRepository.logout()
+        }
+*/
+        profileViewModel.logout()
+
         // Close this and all parent activities
         finishAffinity()
         // Open Login

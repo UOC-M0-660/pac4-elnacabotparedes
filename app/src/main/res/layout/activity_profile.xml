@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    >
+    <!--android:background="@color/backgroundColor"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
             android:id="@+id/imageView"
             android:layout_width="@dimen/profile_image_size"
             android:layout_height="@dimen/profile_image_size"
+            android:contentDescription="@string/image_profile"
             tools:src="@color/black" />
 
         <LinearLayout
@@ -32,6 +34,7 @@
                 android:layout_height="wrap_content"
                 app:tint="@color/colorOnBackground"
                 android:layout_marginEnd="@dimen/margin_small"
+                android:contentDescription="@string/image_viewers"
                 android:src="@drawable/ic_eye"/>
             <TextView
                 android:id="@+id/viewsText"

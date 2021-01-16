@@ -7,19 +7,29 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.pac4.R
 import edu.uoc.pac4.data.SessionManager
+import edu.uoc.pac4.data.TwitchApiDataSource
 import edu.uoc.pac4.data.TwitchApiService
+import edu.uoc.pac4.data.di.dataModule
 import edu.uoc.pac4.data.network.Network
 import edu.uoc.pac4.data.network.UnauthorizedException
+import edu.uoc.pac4.data.streams.StreamsRepository
 import edu.uoc.pac4.ui.login.LoginActivity
 import edu.uoc.pac4.ui.profile.ProfileActivity
+import edu.uoc.pac4.ui.profile.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_streams.*
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
-class StreamsActivity : AppCompatActivity() {
+class StreamsActivity : AppCompatActivity(), KoinComponent {
 
     private val TAG = "StreamsActivity"
 
@@ -28,17 +38,61 @@ class StreamsActivity : AppCompatActivity() {
 
     private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
 
+    private val streamsViewModel: StreamsViewModel by viewModel()
+
+    private var nextCursor: String? = null
+
+    //val streamRepo by inject<StreamsRepository>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_streams)
+
+
+        streamsViewModel.getAllStreams()
+
         // Init RecyclerView
         initRecyclerView()
+
         // Swipe to Refresh Listener
         swipeRefreshLayout.setOnRefreshListener {
             getStreams()
         }
+
+        streamsViewModel.getStreams().observe(this, Observer {
+            response ->
+            response?.let {
+                Log.d("StreamsActivity", "Got Streams: $response")
+
+                val streams = response.second
+                // Update UI with Streams
+                if (response.first != null) {
+                    // We are adding more items to the list
+                    adapter.submitList(adapter.currentList.plus(streams))
+                } else {
+                    // It's the first n items, no pagination yet
+                    adapter.submitList(streams)
+                }
+                // Save cursor for next request
+                nextCursor = response.first
+            } ?: run {
+                if (adapter.currentList.isNullOrEmpty()) {
+                    Toast.makeText(
+                            this@StreamsActivity,
+                            getString(R.string.error_streams), Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            swipeRefreshLayout.isRefreshing = false
+
+        })
+
+
+
+
         // Get Streams
-        getStreams()
+        //getStreams()
+
     }
 
     private fun initRecyclerView() {
@@ -62,15 +116,16 @@ class StreamsActivity : AppCompatActivity() {
         })
     }
 
-    private var nextCursor: String? = null
     private fun getStreams(cursor: String? = null) {
         Log.d(TAG, "Requesting streams with cursor $cursor")
 
         // Show Loading
         swipeRefreshLayout.isRefreshing = true
 
+        streamsViewModel.getAllStreams()
+
         // Get Twitch Streams
-        lifecycleScope.launch {
+        /*lifecycleScope.launch {
             try {
                 twitchApiService.getStreams(cursor)?.let { response ->
                     // Success :)
@@ -110,7 +165,7 @@ class StreamsActivity : AppCompatActivity() {
                 finish()
                 startActivity(Intent(this@StreamsActivity, LoginActivity::class.java))
             }
-        }
+        }*/
     }
 
     // region Menu
